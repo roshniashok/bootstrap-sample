@@ -15,19 +15,13 @@
     <div class="container">
         <h1>Hello Doctor!</h1>
         <p>This is you're EHR portal to manage all you're patient records and authorise various medications</p>
-        <table id="table"
-               data-toggle="table"
-               data-height="460"
-               data-ajax="ajaxRequest"
-               data-search="true"
-               data-side-pagination="server"
-               data-pagination="true">
-               <form>
+
+          <form id="foobar">
             <div class="form-group">
             <p> Registering a new doctor </p>
 
             <label for="exampleInputEmail1">Doctor ID</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter ID">
+            <input type="text" class="form-control" name='formdata[id]' id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter ID">
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div class="form-group">
@@ -37,52 +31,84 @@
 
             </div>
             <div class="form-group">
-            <label for="exampleInputPassword1">First Name</label>
+            <label for="exampleInputPassword2">First Name</label>
             <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter First Name">
             </div>
             <div class="form-group">
-            <label for="exampleInputPassword1">Last Name</label>
-            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter First Name">
+            <label for="exampleInputPassword3">Last Name</label>
+            <input type="text" class="form-control" id="exampleInputPassword2" placeholder="Enter First Name">
             </div>
             <div class="form-group">
-            <label for="exampleInputPassword1">Specialty</label>
-            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Specialty">
+            <label for="exampleInputPassword4">Specialty</label>
+            <input type="text" class="form-control" id="exampleInputPassword3" placeholder="Specialty">
             </div>
             <div class="form-group">
-            <label for="exampleInputPassword1">Age</label>
-            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Age">
+            <label for="exampleInputPassword5">Age</label>
+            <input type="text" class="form-control" id="exampleInputPassword4" placeholder="Age">
             </div>
             <div class="form-group">
-            <label for="exampleInputPassword1">Sex</label>
-            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Sex">
+            <label for="exampleInputPassword6">Sex</label>
+            <input type="text" class="form-control" id="exampleInputPassword5" placeholder="Sex">
             </div>
             <div class="form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">Issue identity</label>
             </div>
-            <button type="submit" class="btn btn-primary">Create doctor entry</button>
+            <button type="submit" class="create btn btn-primary">Create doctor entry</button>
             </form>
-        </table>
     </div>
 <script>
-    var $table = $('#table');
 
-    // your custom ajax request here
-    function ajaxRequest(params) {
-        // data you need
-        console.log(params.data);
-        // just use setTimeout
-        setTimeout(function () {
-            params.success({
-                total: 100,
-                rows: [{
-                    "id": 0,
-                    "name": "Item 0",
-                    "price": "$0"
-                }]
-            });
-        }, 1000);
-    }
+// Find our form in the DOM using its class name.
+//const form = document.getElementByClassName('.formm')[0];
+
+// Get the form data with our (yet to be defined) function.
+//const data = getFormDataAsJSON(form);
+
+
+$.fn.serializeObject = function()
+{
+   var o = {};
+   var a = this.serializeArray();
+   $.each(a, function() {
+       if (o[this.name]) {
+           if (!o[this.name].push) {
+               o[this.name] = [o[this.name]];
+           }
+           o[this.name].push(this.value || '');
+       } else {
+           o[this.name] = this.value || '';
+       }
+   });
+   return o;
+};
+
+$(function () {
+    // create event
+    $('.create').click(function () {
+      console.log("create data");
+
+
+
+var unindexed_array = $('form').serializeArray();
+var indexed_array = {};
+
+$.map(unindexed_array, function(n, i){
+    indexed_array[n['name']] = n['value'];
+});
+
+      console.log(indexed_array);
+
+      $.ajax({
+          url: 'http://localhost:3000/doctor',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(indexed_array),
+      });
+
+    });
+
+});
 </script>
 </body>
 </html>

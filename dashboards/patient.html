@@ -60,25 +60,23 @@
      </form>
         </table>
     </div>
-<script>
-    var $table = $('#table');
-
-    // your custom ajax request here
-    function ajaxRequest(params) {
-        // data you need
-        console.log(params.data);
-        // just use setTimeout
-        setTimeout(function () {
-            params.success({
-                total: 100,
-                rows: [{
-                    "id": 0,
-                    "name": "Item 0",
-                    "price": "$0"
-                }]
-            });
-        }, 1000);
-    }
-</script>
+    <script>
+     $(function() {
+    //twitter bootstrap script
+     $("button#submit").click(function(){
+             $.ajax({
+         type: "POST",
+     url: "PastSurgicalCustomItem",
+     data: $('form.form-horizontal').serialize(),
+             success: function(msg){
+                      alert(msg);
+             },
+     error: function(){
+     alert("failure");
+     }
+           });
+     });
+    });
+    </script>
 </body>
 </html>

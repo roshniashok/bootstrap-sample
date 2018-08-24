@@ -88,11 +88,9 @@
     </div><!-- /.modal -->
 <script>
 
-    var API_URL = 'http://' + location.host + ':3001/list/';
+    var API_URL = 'http://' + 'localhost' + ':8080';
 
-    var $table = $('#table').bootstrapTable({url: API_URL}),
-        $modal = $('#modal').modal({show: false}),
-        $alert = $('.alert').hide();
+
 
     $(function () {
         // create event
